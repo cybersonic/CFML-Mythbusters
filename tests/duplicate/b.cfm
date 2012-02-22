@@ -1,0 +1,1 @@
+<cfset oTest = Duplicate(oObj)>

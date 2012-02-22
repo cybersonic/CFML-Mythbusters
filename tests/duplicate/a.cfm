@@ -1,0 +1,1 @@
+<cfset oTest = CreateObject("tests.test")>

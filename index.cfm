@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <cfset showCF9 = false>
+<cfparam name="URL.reload" default="false">
+<cfset reload = "&amp;reload=#url.reload#">
+	
 <!--
   Google HTML5 slide template
 
@@ -75,30 +78,35 @@
 		</p>
       </article>
 
-	<article>
+	<article class='fill'>
         <h3>The Process</h3>
         <p>
           <img class='centered' style='width: 800px' src="/presentation/monkey2001.jpg">
         </p>
-		    <p>
-			   <ul>
-    				<li>Run the same code a bunch of times and save it to the db! </li>
+		    <p style="margin-top:400px">
+			   <ul class="build white" >
+    				<li>Run the same code a bunch of times and time it! </li>
     				<li>Wind, time of day, what you had for lunch, are all factors. </li>
     				<li>Eliminate them as much as possible.</li>	
     			</ul>
     		</p>
+
       </article>
 
 	<article>
-      <h3> Caveat Emptor </h3>
-      <p>
+      <h3> Caveat Emptor - "Let the buyer beware."</h3>
+  		<p>
+	
 			   <ul>
 				  <li><abbr title="Your Milage May Vary">YMMV</abbr> (different configurations) 
           <li>Tried to use trusted cache so all templates are pre-compiled
           <li>Already compiled in Railo as a .ra so compilation is out of the question
           <li>I obviously work for a <a href="http://www.getrailo.com" title="Railo!">certain company</a>
-          <li>Not a comparison of Railo Vs <abbr title="Adobe's ColdFusion">ACF</a> but testing each myth against each engine
+<!---
+          <li>Not a comparison of Railo Vs <abbr title="Adobe's ColdFusion">ACF</a> but testing each myth against each engine</li>
+--->
 			 </ul>
+
 		  </p>
   </article>
 
@@ -123,15 +131,8 @@
 
 	<article>
         <h3>Results -  Railo</h3>
-        <iframe src='http://mythbusters.local/tests/index.cfm?test=script_1&names=a,b'></iframe>
+        <iframe src='/tests/index.cfm?test=script_1&names=a,b<cfoutput>#reload#</cfoutput>'></iframe>
     </article>
-	
-	<cfif showCF9>
-	<article>
-        <h3>Results ColdFusion 9</h3>
-        <iframe src='http://localhost:8500/mythbusters/index.cfm?test=script_1&names=a,b'></iframe>
-    </article>
-	</cfif>
 
 
 
@@ -146,15 +147,9 @@
 
 	<article>
         <h3>Results - Railo</h3>
-        <iframe src='http://mythbusters.local/tests/index.cfm?test=loops&names=a,b,c'></iframe>
+        <iframe src='/tests/index.cfm?test=loops&names=a,b,c<cfoutput>#reload#</cfoutput>'></iframe>
     </article>
 
-	<cfif showCF9>
-	<article>
-        <h3>Results ColdFusion 9</h3>
-        <iframe src='http://localhost:8500/mythbusters/index.cfm?test=loops&names=a,b,c'></iframe>
-    </article>
-	</cfif>
 	
 
 
@@ -168,7 +163,7 @@
 	    <article>
 	        <h3>Myth 2</h3>
 	        <q>
-	        	Inline IF's are much better than CFIF. I will stake my stake on it
+	        	Inline IF's are much better than CFIF. I will stake my stake on it!
 	        </q>
 	        <div class='author'>
 	        Abraham Van Helsing
@@ -184,7 +179,7 @@
 
 		<article>
 	        <h3>Results</h3>
-	        <iframe src='http://mythbusters.local/tests/index.cfm?test=inline_if&names=a,b'></iframe>
+	        <iframe src='http://mythbusters.local/tests/index.cfm?test=inline_if&names=a,b<cfoutput>#reload#</cfoutput>'></iframe>
 	    </article>
 
 	  	<article>
@@ -210,11 +205,13 @@
 		          <section><cf_show template="isdefined/a.cfm"></section>
 				  Vs.
 		          <section><cf_show template="isdefined/b.cfm"></section>
+				 Vs.
+		          <section><cf_show template="isdefined/c.cfm"></section>
 		    </article>
 
 			<article>
 		        <h3>Results</h3>
-		        <iframe src='http://mythbusters.local/tests/index.cfm?test=isdefined&names=a,b'></iframe>
+		        <iframe src='http://mythbusters.local/tests/index.cfm?test=isdefined&names=a,b,c<cfoutput>#reload#</cfoutput>'></iframe>
 		    </article>
 
 		  	<article>
@@ -224,8 +221,164 @@
 		    </article>
 	
 	
+	<!--- myth 4 --->
+	    <article>
+	        <h3>Myth 4</h3>
+	        <q>
+	        	&lt;cfoutput&gt;
+				<br>#Item#<br>
+				&lt;/cfoutput&gt;
+				<br> is the only way to go!
+	        </q>
+	        <div class='author'>
+	        Mohandas Gandhi
+	        </div>
+	    </article>
+
+	    <article>
+	        <h3>Code</h3>
+	          <section><cf_show template="output/a.cfm"></section>
+			  Vs.
+	          <section><cf_show template="output/b.cfm"></section>
+	    </article>
+
+		<article>
+	        <h3>Results</h3>
+	        <iframe src='http://mythbusters.local/tests/index.cfm?test=output&amp;names=a,b<cfoutput>#reload#</cfoutput>'></iframe>
+	    </article>
+
+	  	<article>
+	        <h3>Verdict</h3>
+	         <img  class='centered' style='width: 800px' src="/presentation/plausable.jpg">
+			<p>Such little difference in it, that we really can't decide</p>
+	    </article>
+
+	
+		<!--- myth 5 --->
+		    <article>
+		        <h3>Myth 5</h3>
+		        <q>
+		        	Don't CreateObject! Use Duplicate! It's much faster!!
+		        </q>
+		        <div class='author'>
+		        Angelina Jolie
+		        </div>
+		    </article>
+			<article class="fill">
+				<h3>Time to get some "Hackers" onto it</h3>
+					<img  class='centered' style='width: 800px' src="presentation/aj_hacker.jpg">
+		 		<div class='source white'>
+					Presentation improved by 100% with Angelina Jolie
+				</div>
+			</article>
+		    <article>
+		        <h3>Code</h3>
+		          <section><cf_show template="duplicate/a.cfm"></section>
+				  Vs.
+		          <section><cf_show template="duplicate/b.cfm"></section>
+		    </article>
+			 <article>
+			          <section><cf_show template="test.cfc"></section>
+					  <section><cf_show template="super.cfc"></section>
+					  <section><cf_show template="supersuper.cfc"></section>
+			    </article>
+		
+
+			<article>
+		        <h3>Results</h3>
+		        <iframe src='http://mythbusters.local/tests/index.cfm?test=duplicate&amp;names=a,b<cfoutput>#reload#</cfoutput>'></iframe>
+		    </article>
+		  	<article>
+		        <h3>Verdict</h3>
+		         <img  class='centered' style='width: 800px' src="/presentation/confirmed.jpg">
+				<p>You can get a major boost by duplicating objects, even if they extend other objects</p>
+		    </article>
+	
+			<!--- myth 6 --->
+		    <article class='fill'>
+		        <h3>Myth 6</h3>
+		        <q class="white">
+		        	SILENCE is golden, it beats a comment, bear this in mind young Adso
+		        </q>
+		        <div class='author white'>
+					William of Baskerville 
+		        </div>
+				<img  class='centered' style='width: 800px' src="presentation/baskerville.jpg">
+		    </article>
+
+		    <article>
+		        <h3>Code - I</h3>
+		          <section><cf_show template="silence/a.cfm"></section>
+				  Vs.
+		          <section><cf_show template="silence/b.cfm"></section>
+		    </article>
+		
+			<article>
+			    <h3>Code - II</h3>
+         			<section><cf_show template="silence/c.cfm"></section>
+						  Vs.
+			         <section><cf_show template="silence/d.cfm"></section>
+			</article>
+				
+			
+
+			<article>
+		        <h3>Results</h3>
+		        <iframe src='http://mythbusters.local/tests/index.cfm?test=silence&amp;names=a,b,c,d&amp;RequestTimeout=300<cfoutput>#reload#</cfoutput>'></iframe>
+		    </article>
+		  	<article>
+		        <h3>Verdict</h3>
+		         <img  class='centered' style='width: 800px' src="/presentation/confirmed.jpg">
+				<p>You can get a major boost by duplicating objects, even if they extend other objects</p>
+		    </article>
+	
+			<!--- myth 7--->
+		    <article>
+		        <h3>Myth 7</h3>
+		        <q>
+		        	Evaluate is good! You should use it all the time! Gotta have me some Evaluate!
+		        </q>
+		        <div class='author'>
+					Tyra Banks - America's Next Top Developer
+		        </div>
+		    </article>
+			<article>
+				<h3>Code</h3>
+			    <section><cf_show template="evaluate/a.cfm"></section>
+				Vs.
+			    <section><cf_show template="evaluate/b.cfm"></section>
+			</article>
+			<article>
+	        	<h3>Results</h3>
+			    <iframe src='/tests/index.cfm?test=evaluate&amp;names=a,b<cfoutput>#reload#</cfoutput>'></iframe>
+			  </article>
+	<!--- myth 8--->
+    <article>
+       <h3>Myth 8</h3>
+	    <q>
+		     	CFInvoke is the work of the DEVIL! Never use it!
+		</q>
+        <div class='author'>
+			Cardinal Xim&eacute;nez
+        </div>
+	</article>
+	<article class='fill'>
+		<h3>You didn't expect them did you?</h3>
+		<img  class='centered' style='width: 800px' src="presentation/spanishinquisition.jpg">
+	</article>
 	
 	
+	<article>
+		<h3>Code</h3>
+	    <section><cf_show template="invoke/a.cfm"></section>
+		Vs.
+	    <section><cf_show template="invoke/b.cfm"></section>
+	</article>
+	<article>
+       	<h3>Results</h3>
+	    <iframe src='/tests/index.cfm?test=invoke&amp;names=a,b<cfoutput>#reload#</cfoutput>'></iframe>
+	</article>	
+	<!---
 
 
       <article class='smaller'>
@@ -515,6 +668,6 @@
       </article>
 
     </section>
-
+	--->
   </body>
 </html>

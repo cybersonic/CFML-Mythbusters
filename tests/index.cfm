@@ -1,49 +1,106 @@
 <cfparam name="url.test">
 <cfparam name="url.names" default="a,b">
-<cfparam name="url.reload" default="false">
 <cfparam name="FORM.susi" default="hello">
-<cfset stResults = {}>	
-
-<!--- generic values the tests can use --->
+<cfparam name="url.loops" default="10000">
+<cfset loops = url.loops>
+<!--- variables used in the tests --->
 <cfset variables.a = 25>
 <cfset b = "susi">
 <cfset oObj = createObject("component", "test")>
 <cfset iCount =  100>
-		
-<cfif Not fileExists("/tests/#url.test#/results.json") OR url.reload>		
+<cfset sLst = "">
+<cfset aList = []>
+<!--- create the tests if they are not rednered --->
+
+<cfset loop_template = FileRead("/tests/loop_template.cfm")>
+<!--- Create the files for inclusion --->
 <cfloop list="#url.names#" index="n">
-	<cfset stResults[n] = {}>
-	<cfsavecontent variable="item">
-	<cfset stResults[n].start = getTickCount()>
-	<cfloop from="1" to="10000" index="x">
-			<cfinclude template="/tests/#url.test#/#n#.cfm">
+	<cfif !FileExists("/tests/rendered/#url.test#_#n#_test.cfm")>
+		<cfset testContent = FileRead("/tests/#url.test#/#n#.cfm")>
+		<cfset test_with_loop = Replace(loop_template, "{test}", testContent)>
+		<!--- now save it as name_test.cfm --->
+		<cfset FileWrite("/tests/rendered/#url.test#_#n#_test.cfm", test_with_loop)>
+	</cfif>
+</cfloop>
+
+
+<cfset saveFile = "/tests/results/#url.test#.results">
+
+<cfif !FileExists(saveFile)>
+<cfset testResult =  QueryNew("test,instance,name,result")>
+<!--- Actually run it 10 times (so we get the fastest) --->
+<cfloop from="1" to="10" index="c">
+
+	<cfloop list="#url.names#" index="n">
+		<cfset testinstance = {}>
+		<!--
+		<cfinclude template="/tests/rendered/#url.test#_#n#_test.cfm">
+		-->
+		<cfset queryAddRow(testResult)>
+		<cfset querySetCell(testResult, "test", url.test)>
+		<cfset querySetCell(testResult, "instance", c)>
+		<cfset querySetCell(testResult, "name", n)>
+		<cfset querySetCell(testResult, "result", testinstance.total)>
 	</cfloop>
-	<cfset stResults[n].end = getTickCount()>	
-	</cfsavecontent>
+</cfloop>
+	<cfset FileWrite(saveFile, Serialize(testResult))>
 
-	<cfset stResults[n].total = stResults[n].end - stResults[n].start>	
-</cfloop>	
-	<cfset FileWrite("/tests/#url.test#/results.json", SerializeJSON(stResults))>
 <cfelse>
-	<cfset stResults = DeSerializeJSON(FileRead("/tests/#url.test#/results.json"))>
-		
-</cfif>	
+	<cfset testResult = Evaluate(FileRead(saveFile))>	
+</cfif>
 
-<cfset total = 0>
+
+
+
+
 <cfchart chartwidth="700" chartheight="500" >
-	<cfchartseries type="bar" colorlist="">
+	<cfchartseries type="bar" >
 		<cfloop list="#url.names#" index="r">
-			<cfchartdata item="#r#" value="#stResults[r].total#">			
+			<cfchartdata item="#r#" value="#getFastest(testResult, r)#">			
 		</cfloop>
 	</cfchartseries>
 </cfchart>	
+
+<cfset total = 0>
 <cfloop list="#url.names#" index="r">
-		<cfset total += stResults[r].total>
+	<cfset total += getFastest(testResult, r)>
 </cfloop>
-	
-<!--- draw percentages --->	
+
 <br>
 <cfloop list="#url.names#" index="r">
-	<cfset pct = (100/total) * stResults[r].total>
+	<cfset pct = (100/total) * getFastest(testResult, r)>
 <cfoutput>#r# = #NumberFormat(pct, "99,999")#%	</cfoutput>
 </cfloop>
+
+<cfchart chartwidth="700" chartheight="500" >
+	<cfloop list="#url.names#" index="r">
+	<cfset rangeQuery = getRangeResults(testResult,r)>
+	<cfchartseries type="bar" query="rangeQuery" itemcolumn="instance" valuecolumn="result" serieslabel="#r#"></cfchartseries>
+	</cfloop>
+</cfchart>
+
+
+<cffunction name="getFastest">
+	<cfargument name="results">
+	<cfargument name="name">
+	<cfquery name="local.fastest" dbtype="query">
+		SELECT MIN(result) AS minresult FROM arguments.results
+		WHERE name=<cfqueryparam cfsqltype="varchar" value="#arguments.name#">
+	</cfquery>
+	<cfreturn fastest.minresult>
+</cffunction>
+
+<cffunction name="getRangeResults">
+	<cfargument name="results">
+	<cfargument name="name">
+	<cfquery name="local.range" dbtype="query">
+		SELECT * FROM arguments.results
+		 WHERE name= <cfqueryparam cfsqltype="varchar" value="#arguments.name#">
+	</cfquery>
+	<cfreturn range>
+</cffunction>
+
+
+
+
+

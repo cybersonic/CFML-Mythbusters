@@ -24,7 +24,7 @@
 </cfloop>
 
 
-<cfset saveFile = "/tests/results/#url.test#.results">
+<cfset saveFile = expandPath("/results/#url.test#.results")>
 
 <cfif !FileExists(saveFile)>
 <cfset testResult =  QueryNew("test,instance,name,result")>

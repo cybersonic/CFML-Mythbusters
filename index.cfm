@@ -131,7 +131,7 @@
     <article>
         <h3>Myth 1</h3>
         <q>
-         CFScript is always faster! Even when using it for loops!
+         CFScript is always (relatively) faster! Even when using it for loops!
         </q>
         <div class='author'>
          Alfred Einstein
@@ -449,23 +449,53 @@
 			Mark Drew
         </div>
 	</article>
-    <article>
+	 <article>
+	   <h3>What the hosting companies say:</h3>
+	   <br><br>
+       <img style="width:800px" src="presentation/utdream.png">
+	</article>
+	<article>
+	       <img style="width:800px" src="presentation/viviotech.png">
+	</article>
+	
+	<article>
+	       <img style="width:800px" src="presentation/hostek.png">
+	</article>
+	<article>
+	       <img style="width:800px" src="presentation/hostmedia.png">
+	</article>
+	
+    <article class='fill'>
 		
 		<h3>Some Download stats...</h3>
+		<iframe src="http://www.getrailo.com/reports/dlstats.cfm"></iframe>
+		<!--
 		<img class='centered' style='width: 800px' src="presentation/railo_downloads.png">
+		-->
 	</article>	
 	
 	<cf_verdict result="busted" message="More people are using it, downloads growing, new versions all round">
 	
+	<article>
+       <h3>Competition: Win a copy of Railo 3: Beginner's Guide</h3>
+		<img class='centered' style='height: 300px' src="presentation/railobook.jpg">
+		<ul class="build">
+			<li>Go to <a href="http://bit.ly/RailoBook">http://bit.ly/RailoBook</a></li>
+			<li>Read the description of the book</li>
+			<li>Email what the title of Chapter 7 is to <a href="mailto:contact@getrailo.com">contact@getrailo.com</a></li>		
+			<li>Draw on the 30th of March</li>		
+		</ul>
+	</article>
 	
 	
 	<article>
        <h3>Credits</h3>
 		<ul>
-			<li>Slides by <a href="http://code.google.com/p/html5slides/">HTML5 Slides http://code.google.com/p/html5slides/</a></li>
+			<li>Source code and presentation <a href="https://github.com/cybersonic/CFML-Mythbusters">https://github.com/cybersonic/CFML-Mythbusters</a></li>
 			<li>Discovery Channel for the idea, and a great show</li>
 			<li>Gert Franz for help in testing and the tests themselves</li>		
-			
+			<li>Christian Ready for getting me here! Oh, and Hubble. It's awesome.</li>		
+			<li>Slides by <a href="http://code.google.com/p/html5slides/">HTML5 Slides http://code.google.com/p/html5slides/</a></li>			
 		</ul>
 	</article>
 	<!---

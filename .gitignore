@@ -1,4 +1,5 @@
 old_tests/
 results.json
-tests/rendered/
-tests/results/
+tests/rendered/*.cfm
+tests/results/*.results
+results/*.results

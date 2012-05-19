@@ -2,5 +2,4 @@
 	---><cfloop from="1" to="#iCount#" index="i"><!---
 		---><cfset b = variables.a><!---
 	---></cfloop><!---
-	---><cfflush><!---
 ---></cfloop>

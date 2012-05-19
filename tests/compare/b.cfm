@@ -1,1 +1,1 @@
-<cfif not len(trim(a))></cfif>
+<cfif not len(a)></cfif>

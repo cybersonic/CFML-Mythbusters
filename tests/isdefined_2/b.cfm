@@ -1,0 +1,1 @@
+<cfif structKeyExists(variables, "z")></cfif>

@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <cfset showCF9 = false>
+<cfset showCF10 = true>
+<cfset CF9URL = "http://localhost:8500/tests/">
+<cfset CF10URL = "http://localhost:8501/tests/">
 <cfparam name="URL.reload" default="false">
 <cfset reload = "&amp;reload=#url.reload#">
 	
@@ -52,7 +55,10 @@
         <h1>
           CFML Mythbusters
           <br>
-          10 Coding Myths, Busted!
+          <q>10 Coding Myths
+			<br>
+			<small>Put to the test!</small>
+		  </q>
         </h1>
         <p>
           Mark Drew
@@ -116,6 +122,7 @@
           <li>Tried to use trusted cache so all templates are pre-compiled
           <li>Already compiled in Railo as a .ra so compilation is out of the question
           <li>I obviously work for a <a href="http://www.getrailo.com" title="Railo!">certain company</a>
+		<li>Running on Railo <code><cfoutput>#SERVER.RAILO.VERSION#</cfoutput></code></li>
 		  	
 <!---
           <li>Not a comparison of Railo Vs <abbr title="Adobe's ColdFusion">ACF</a> but testing each myth against each engine</li>
@@ -131,7 +138,7 @@
     <article>
         <h3>Myth 1</h3>
         <q>
-         CFScript is always (relatively) faster! Even when using it for loops!
+         CFScript is always faster! Even when using it for loops! Relatively!!!
         </q>
         <div class='author'>
          Alfred Einstein
@@ -149,7 +156,12 @@
         <iframe src='/tests/index.cfm?test=script_1&names=a,b<cfoutput>#reload#</cfoutput>'></iframe>
     </article>
 
-
+	<cfif showCF10>
+	<article>
+        <h3>Results -  CF10</h3>
+        <iframe src='<cfoutput>#CF10URL#</cfoutput>index.cfm?test=script_1&names=a,b<cfoutput>#reload#</cfoutput>'></iframe>
+    </article>
+	</cfif>
 
     <article>
         <h3>Code</h3>
@@ -164,6 +176,14 @@
         <h3>Results - Railo</h3>
         <iframe src='/tests/index.cfm?test=loops&names=a,b,c<cfoutput>#reload#</cfoutput>'></iframe>
     </article>
+
+	<cfif showCF10>
+	<article>
+        <h3>Results -  CF10</h3>
+        <iframe src='<cfoutput>#CF10URL#</cfoutput>index.cfm?test=loops&names=a,b<cfoutput>#reload#</cfoutput>'></iframe>
+    </article>
+	</cfif>
+	
 
 	<cf_verdict result="busted" message="CFSCript isn't much faster, there are some TAG functions that are even faster!">
 
@@ -192,7 +212,15 @@
 	        <iframe src='http://mythbusters.local/tests/index.cfm?test=inline_if&names=a,b<cfoutput>#reload#</cfoutput>'></iframe>
 	    </article>
 
-	  			<cf_verdict result="plausable" message="Such little difference in it, that we really can't decide">
+		<cfif showCF10>
+		<article>
+        	<h3>Results -  CF10</h3>
+        	<iframe src='<cfoutput>#CF10URL#</cfoutput>index.cfm?test=inline_if&names=a,b<cfoutput>#reload#</cfoutput>'></iframe>
+    	</article>
+		</cfif>
+	
+
+	  	<cf_verdict result="plausable" message="Such little difference in it, that we really can't decide">
 	
 	
 		<!--- myth 3 --->
@@ -219,6 +247,35 @@
 		        <h3>Results</h3>
 		        <iframe src='http://mythbusters.local/tests/index.cfm?loops=100000&test=isdefined&names=a,b,c<cfoutput>#reload#</cfoutput>'></iframe>
 		    </article>
+			<cfif showCF10>
+			<article>
+	        	<h3>Results -  CF10</h3>
+	        	<iframe src='<cfoutput>#CF10URL#</cfoutput>index.cfm?loops=100000&test=isdefined&names=a,b,c<cfoutput>#reload#</cfoutput>'></iframe>
+	    	</article>
+			</cfif>		  
+			
+			<article>
+		        <h3>Code</h3>
+		          <section><cf_show template="isdefined_2/a.cfm"></section>
+				  Vs.
+		          <section><cf_show template="isdefined_2/b.cfm"></section>
+				 Vs.
+		          <section><cf_show template="isdefined_2/c.cfm"></section>
+		    </article>
+			
+			  
+			<article>
+		        <h3>Results</h3>
+		        <iframe src='http://mythbusters.local/tests/index.cfm?loops=100000&test=isdefined_2&names=a,b,c<cfoutput>#reload#</cfoutput>'></iframe>
+		    </article>
+			<cfif showCF10>
+			<article>
+	        	<h3>Results -  CF10</h3>
+	        	<iframe src='<cfoutput>#CF10URL#</cfoutput>index.cfm?loops=10000&test=isdefined_2&names=a,b,c<cfoutput>#reload#</cfoutput>'></iframe>
+	    	</article>
+			</cfif>
+			
+			
 		<cf_verdict result="plausable" message="Such little difference in it, that we really can't decide">
 	
 	
@@ -247,8 +304,13 @@
 	        <h3>Results</h3>
 	        <iframe src='http://mythbusters.local/tests/index.cfm?loops=100&test=output&amp;names=a,b<cfoutput>#reload#</cfoutput>'></iframe>
 	    </article>
-		
-		<cf_verdict result="plausable" message="Such little difference in it, that we really can't decide">
+		<cfif showCF10>
+			<article>
+	        	<h3>Results -  CF10</h3>
+	        	<iframe src='<cfoutput>#CF10URL#</cfoutput>index.cfm?loops=100&test=output&names=a,b<cfoutput>#reload#</cfoutput>'></iframe>
+	    	</article>
+			</cfif>		
+		<cf_verdict result="busted" message="Obviously outputting within a loop is much faster, than creating multiple instances of cfoutput">
 	
 	
 		<!--- myth 5 --->
@@ -287,7 +349,12 @@
         <h3>Results</h3>
         <iframe src='http://mythbusters.local/tests/index.cfm?test=duplicate&amp;names=a,b<cfoutput>#reload#</cfoutput>'></iframe>
     </article>
-	
+	<cfif showCF10>
+	<article>
+       	<h3>Results -  CF10</h3>
+       	<iframe src='<cfoutput>#CF10URL#</cfoutput>index.cfm?test=duplicate&loops=1000&names=a,b<cfoutput>#reload#</cfoutput>'></iframe>
+   	</article>
+	</cfif>		
 	
 	<cf_verdict result="confirmed" message='You can get a major boost by duplicating objects, even if they extend other objects'>
 	
@@ -325,7 +392,14 @@
         <iframe src='http://mythbusters.local/tests/index.cfm?loops=100&test=silence&amp;names=a,b,c,d&amp;RequestTimeout=300<cfoutput>#reload#</cfoutput>'></iframe>
     </article>
 	
-	<cf_verdict result="plausable" message='Not much difference between using different trimming methodologies'>
+	<cfif showCF10>
+	<article>
+       	<h3>Results -  CF10</h3>
+       	<iframe src='<cfoutput>#CF10URL#</cfoutput>index.cfm?loops=100&test=silence&names=a,b,c,d<cfoutput>#reload#</cfoutput>'></iframe>
+   	</article>
+	</cfif>		
+	
+	<cf_verdict result="busted" message='Not much difference between using different trimming methodologies'>
 	
 	<!--- myth 7--->
     <article>
@@ -342,13 +416,22 @@
 	    <section><cf_show template="evaluate/a.cfm"></section>
 		Vs.
 	    <section><cf_show template="evaluate/b.cfm"></section>
+		Vs.
+	    <section><cf_show template="evaluate/c.cfm"></section>
 	</article>
 	<article>
        	<h3>Results</h3>
-	    <iframe src='/tests/index.cfm?test=evaluate&amp;names=a,b<cfoutput>#reload#</cfoutput>'></iframe>
+	    <iframe src='/tests/index.cfm?test=evaluate&amp;names=a,b,c<cfoutput>#reload#</cfoutput>'></iframe>
 	  </article>
 	  
-  	<cf_verdict result="busted" message='Tyra should stick to modeling and in most cases Evaluate is slow!'>
+	<cfif showCF10>
+	<article>
+       	<h3>Results -  CF10</h3>
+       	<iframe src='<cfoutput>#CF10URL#</cfoutput>index.cfm?test=evaluate&names=a,b,c<cfoutput>#reload#</cfoutput>'></iframe>
+   	</article>
+	</cfif>
+	
+  	<cf_verdict result="plausable" message='It is very slow in Railo, CF not so much'>
 
 	  
 	<!--- myth 8--->
@@ -378,7 +461,12 @@
        	<h3>Results</h3>
 	    <iframe src='/tests/index.cfm?loops=10000&test=invoke&amp;names=a,b,c<cfoutput>#reload#</cfoutput>'></iframe>
 	</article>	
-	
+	<cfif showCF10>
+	<article>
+       	<h3>Results -  CF10</h3>
+       	<iframe src='<cfoutput>#CF10URL#</cfoutput>index.cfm??loops=10000&test=invoke&names=a,b<cfoutput>#reload#</cfoutput>'></iframe>
+   	</article>
+	</cfif>
 	<cf_verdict result="plausable" message='<strong>CFINVOKE</strong> creates new instances. No reason to use it with new syntax constructs like testObj["myMethod"]()'>
 	
 	<!--- myth 9--->
@@ -402,8 +490,12 @@
        	<h3>Results</h3>
 	    <iframe src='/tests/index.cfm?test=compare&amp;names=a,b<cfoutput>#reload#</cfoutput>'></iframe>
 	</article>	
+	<article>
+       	<h3>Results -  CF10</h3>
+       	<iframe src='<cfoutput>#CF10URL#</cfoutput>index.cfm?test=compare&names=a,b<cfoutput>#reload#</cfoutput>'></iframe>
+   	</article>
 	<cf_verdict result="plausable" message="<strong>EQ</strong> seems to work pretty well">
-	
+
 	<!--- myth 10--->
     <article>
        <h3>Myth 10</h3>
@@ -428,6 +520,10 @@
        	<h3>Results</h3>
 	    <iframe src='/tests/index.cfm?loops=1000&test=lists&amp;names=a,b<cfoutput>#reload#</cfoutput>'></iframe>
 	</article>	
+	<article>
+       	<h3>Results -  CF10</h3>
+       	<iframe src='<cfoutput>#CF10URL#</cfoutput>index.cfm?loops=1000&test=lists&names=a,b<cfoutput>#reload#</cfoutput>'></iframe>
+   	</article>
 	
 	<cf_verdict result="busted" message="Lists are very slow! Use arrays instead">
 	
@@ -443,8 +539,16 @@
 	</article>
     <article>
 	    <q>
-			<strong>NO IT'S NOT!</strong>
+			<strong>CFML is NOT DEAD!</strong>
 		</q>
+			<ul>
+				<li>WE are SUPPORTING it</li>
+				<li>We are MARKETING it</li>
+				<li>We are DEVELOPING it</li>
+				<li>For the next 10 years and more</li>
+			</ul>
+				
+	
         <div class='author'>
 			Mark Drew
         </div>
@@ -476,6 +580,7 @@
 	
 	<cf_verdict result="busted" message="More people are using it, downloads growing, new versions all round">
 	
+	<!---
 	<article>
        <h3>Competition: Win a copy of Railo 3: Beginner's Guide</h3>
 		<img class='centered' style='height: 300px' src="presentation/railobook.jpg">
@@ -486,7 +591,7 @@
 			<li>Draw on the 30th of March</li>		
 		</ul>
 	</article>
-	
+	--->
 	
 	<article>
        <h3>Credits</h3>

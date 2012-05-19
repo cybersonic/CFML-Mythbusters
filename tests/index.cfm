@@ -12,14 +12,23 @@
 <cfset aList = []>
 <!--- create the tests if they are not rednered --->
 
-<cfset loop_template = FileRead("/tests/loop_template.cfm")>
+
+<cfset loop_template = FileRead(expandPath("/tests/loop_template.cfm"))>
+<cfif SERVER.ColdFusion.ProductName EQ "ColdFusion Server">
+	<cfif ListFirst(SERVER.ColdFusion.ProductVersion) EQ 10>
+		<cfset loop_template = FileRead(expandPath("/tests/loop_template10.cfm"))>	
+	<cfelse>		
+		<cfset loop_template = FileRead(expandPath("/tests/loop_template9.cfm"))>	
+	</cfif>
+	
+</cfif>
 <!--- Create the files for inclusion --->
 <cfloop list="#url.names#" index="n">
-	<cfif !FileExists("/tests/rendered/#url.test#_#n#_test.cfm")>
-		<cfset testContent = FileRead("/tests/#url.test#/#n#.cfm")>
+	<cfif !FileExists("/tests/#url.test#_#n#_test.cfm")>
+		<cfset testContent = FileRead(expandPath("/tests/#url.test#/#n#.cfm"))>
 		<cfset test_with_loop = Replace(loop_template, "{test}", testContent)>
 		<!--- now save it as name_test.cfm --->
-		<cfset FileWrite("/tests/rendered/#url.test#_#n#_test.cfm", test_with_loop)>
+		<cfset FileWrite(expandPath("/rendered/#url.test#_#n#_test.cfm"), test_with_loop)>
 	</cfif>
 </cfloop>
 
@@ -27,6 +36,7 @@
 <cfset saveFile = expandPath("/results/#url.test#.results")>
 
 <cfif !FileExists(saveFile)>
+
 <cfset testResult =  QueryNew("test,instance,name,result")>
 <!--- Actually run it 10 times (so we get the fastest) --->
 <cfloop from="1" to="10" index="c">
@@ -34,7 +44,7 @@
 	<cfloop list="#url.names#" index="n">
 		<cfset testinstance = {}>
 		<!--
-		<cfinclude template="/tests/rendered/#url.test#_#n#_test.cfm">
+		<cfinclude template="/rendered/#url.test#_#n#_test.cfm">
 		-->
 		<cfset queryAddRow(testResult)>
 		<cfset querySetCell(testResult, "test", url.test)>
@@ -43,20 +53,21 @@
 		<cfset querySetCell(testResult, "result", testinstance.total)>
 	</cfloop>
 </cfloop>
-	<cfset FileWrite(saveFile, Serialize(testResult))>
 
+<cfset FileWrite(saveFile, SerializeJSON(testResult))>
 <cfelse>
-	<cfset testResult = Evaluate(FileRead(saveFile))>	
+	<cfset testResult = DESerializeJSON(FileRead(saveFile))>
+
 </cfif>
 
 
 
 
 
-<cfchart chartwidth="700" chartheight="500" >
+<cfchart chartwidth="700" chartheight="500" format="png">
 	<cfchartseries type="bar" >
 		<cfloop list="#url.names#" index="r">
-			<cfchartdata item="#r#" value="#getFastest(testResult, r)#">			
+			<cfchartdata item="#r#" value="#NumberFormat(getFastest(testResult, r), "9,999")#">			
 		</cfloop>
 	</cfchartseries>
 </cfchart>	
@@ -72,7 +83,7 @@
 <cfoutput>#r# = #NumberFormat(pct, "99,999")#%	</cfoutput>
 </cfloop>
 
-<cfchart chartwidth="700" chartheight="500" >
+<cfchart chartwidth="700" chartheight="500" format="png">
 	<cfloop list="#url.names#" index="r">
 	<cfset rangeQuery = getRangeResults(testResult,r)>
 	<cfchartseries type="bar" query="rangeQuery" itemcolumn="instance" valuecolumn="result" serieslabel="#r#"></cfchartseries>

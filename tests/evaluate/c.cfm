@@ -1,0 +1,1 @@
+<cfset a = evaluate("ArrayLen([1,2,3])")> 

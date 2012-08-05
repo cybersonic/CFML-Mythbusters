@@ -153,6 +153,15 @@
           <section><cf_show template="script_1/b.cfm"></section>
     </article>
 
+
+	<!--- we could include a tag to do all of this --->
+	<cf_results  
+		test="script_1&names=a,b"
+		reload="#reload#">
+
+
+<cfabort>
+
 	<article>
         <h3>Results -  Railo</h3>
         <iframe src='/tests/index.cfm?test=script_1&names=a,b<cfoutput>#reload#</cfoutput>'></iframe>

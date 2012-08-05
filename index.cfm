@@ -1,8 +1,10 @@
 <!DOCTYPE html>
+<cfset showRailo = true>
 <cfset showCF9 = false>
 <cfset showCF10 = true>
-<cfset CF9URL = "http://localhost:8500/tests/">
-<cfset CF10URL = "http://localhost:8501/tests/">
+<cfset CF9URL = "http://localhost:8080/cfusion9/mythbusters/tests/">
+<cfset CF10URL = "http://localhost:8080/cfusion10/mythbusters/tests/">
+<cfset RAILOURL = "http://localhost:8080/railo/mythbusters/tests/">
 <cfparam name="URL.reload" default="false">
 <cfset reload = "&amp;reload=#url.reload#">
 	
@@ -23,7 +25,7 @@
     <title>CFML Mythbusters</title>
     <meta charset='utf-8'>
     <script
-      src='/js/slides.js'></script>
+      src='js/slides.js'></script>
   </head>
   
   
@@ -34,10 +36,10 @@
 	       what you want. */
 
 		.slides.template-default article.biglogo  {
-		  background: white url(/images/railo-logo-orange.png) 50% 50% no-repeat !important;
+		  background: white url(images/railo-logo-orange.png) 50% 50% no-repeat !important;
 		}
 		.slides.template-default > article:not(.nobackground):not(.biglogo) {
-		  background: url(/images/railo-logo-small.png) 0px 590px no-repeat !important;  
+		  background: url(images/railo-logo-small.png) 0px 590px no-repeat !important;  
 		  background-color: white !important;  
 		}
 
@@ -68,13 +70,13 @@
       </article>
       
       <article>
-       	<img src="/presentation/my_name.png">
+       	<img src="presentation/my_name.png">
       </article>
 
       <article>
         <h3>CFML Myths!</h3>
         <p>
-          <img class='centered' style='height: 400px' src="/presentation/muppetmythbusters.jpg">
+          <img class='centered' style='height: 400px' src="presentation/muppetmythbusters.jpg">
         </p>
 		<p>
 			<ul>
@@ -87,7 +89,7 @@
 	<article>
         <h3>The Process</h3>
         <p>
-          <img class='centered' style='width: 600px' src="/presentation/monkey2001.jpg">
+          <img class='centered' style='width: 600px' src="presentation/monkey2001.jpg">
         </p>
 		    <p>
 			   <ul>

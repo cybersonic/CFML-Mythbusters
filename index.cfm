@@ -4,7 +4,7 @@
 <cfset showCF10 = true>
 <cfset CF9URL = "http://localhost:8080/cfusion9/mythbusters/tests/">
 <cfset CF10URL = "http://localhost:8080/cfusion10/mythbusters/tests/">
-<cfset RAILOURL = "http://localhost:8080/railo/mythbusters/tests/">
+<cfset RAILOURL = "http://localhost:8080/railo4/mythbusters/tests/">
 <cfparam name="URL.reload" default="false">
 <cfset reload = "&amp;reload=#url.reload#">
 	
@@ -124,8 +124,7 @@
           <li>Tried to use trusted cache so all templates are pre-compiled
           <li>Already compiled in Railo as a .ra so compilation is out of the question
           <li>I obviously work for a <a href="http://www.getrailo.com" title="Railo!">certain company</a>
-		<li>Running on Railo <code><cfoutput>#SERVER.RAILO.VERSION#</cfoutput></code></li>
-		  	
+			<li>Running on Railo <code><cfoutput>#SERVER.RAILO.VERSION#</cfoutput></code></li>
 <!---
           <li>Not a comparison of Railo Vs <abbr title="Adobe's ColdFusion">ACF</a> but testing each myth against each engine</li>
 --->
@@ -153,26 +152,7 @@
           <section><cf_show template="script_1/b.cfm"></section>
     </article>
 
-
-	<!--- we could include a tag to do all of this --->
-	<cf_results  
-		test="script_1&names=a,b"
-		reload="#reload#">
-
-
-<cfabort>
-
-	<article>
-        <h3>Results -  Railo</h3>
-        <iframe src='/tests/index.cfm?test=script_1&names=a,b<cfoutput>#reload#</cfoutput>'></iframe>
-    </article>
-
-	<cfif showCF10>
-	<article>
-        <h3>Results -  CF10</h3>
-        <iframe src='<cfoutput>#CF10URL#</cfoutput>index.cfm?test=script_1&names=a,b<cfoutput>#reload#</cfoutput>'></iframe>
-    </article>
-	</cfif>
+	<cf_results test="script_1&names=a,b" reload="#reload#">
 
     <article>
         <h3>Code</h3>

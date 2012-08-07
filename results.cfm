@@ -2,7 +2,7 @@
 <cfparam name="CALLER.showCF9" default="false">
 <cfparam name="CALLER.showRailo" default="false">
 <cfparam name="attributes.test" default="">
-<cfparam name="attributes.reload" defailt="false">
+<cfparam name="attributes.reload" default="false">
 	
 <cfoutput>	
 <cfif CALLER.showRailo>

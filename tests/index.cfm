@@ -64,6 +64,7 @@
 	<cfset testResult = convertToQuery(testResult)>
 </cfif>
 
+
 <cfchart chartwidth="700" chartheight="500" format="png">
 	<cfchartseries type="bar" >
 		<cfloop list="#url.names#" index="r">
@@ -99,7 +100,9 @@
 		SELECT MIN(result) AS minresult FROM arguments.results
 		WHERE name=<cfqueryparam cfsqltype="varchar" value="#arguments.name#">
 	</cfquery>
-	
+		<cfif !IsNumeric(fastest.minresult)>
+			<cfreturn 0>
+		</cfif>
 	<cfreturn fastest.minresult>
 </cffunction>
 
@@ -110,6 +113,7 @@
 		SELECT * FROM arguments.results
 		 WHERE name= <cfqueryparam cfsqltype="varchar" value="#arguments.name#">
 	</cfquery>
+
 	<cfreturn range>
 </cffunction>
 

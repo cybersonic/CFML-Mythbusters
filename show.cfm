@@ -1,3 +1,3 @@
 <cfscript>
-	WriteOutput(HTMLCodeFormat(FileRead("tests/#attributes.template#")));
+	WriteOutput(HTMLCodeFormat(FileRead(expandPath("tests/#attributes.template#"))));
 </cfscript>

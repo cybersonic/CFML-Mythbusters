@@ -4,7 +4,7 @@
 <cfoutput>
 	<article>
 		<h3>Verdict</h3>
-	    <img  class='centered' style='width: 800px' src="/presentation/#attributes.result#.jpg">
+	    <img  class='centered' style='width: 800px' src="presentation/#attributes.result#.jpg">
 	    <cfif len(attributes.message)>
 		    <p>#attributes.message#</p>
 		</cfif>

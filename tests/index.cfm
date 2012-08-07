@@ -16,9 +16,9 @@
 <cfset loop_template = FileRead(expandPath("loop_template.cfm"))>
 <cfif SERVER.ColdFusion.ProductName EQ "ColdFusion Server">
 	<cfif ListFirst(SERVER.ColdFusion.ProductVersion) EQ 10>
-		<cfset loop_template = FileRead(expandPath("tests/loop_template10.cfm"))>	
+		<cfset loop_template = FileRead(expandPath("loop_template10.cfm"))>	
 	<cfelse>		
-		<cfset loop_template = FileRead(expandPath("tests/loop_template9.cfm"))>	
+		<cfset loop_template = FileRead(expandPath("loop_template9.cfm"))>	
 	</cfif>
 	
 </cfif>

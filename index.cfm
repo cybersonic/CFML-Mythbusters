@@ -5,7 +5,7 @@
 
 <cfset CF9URL = "http://localhost:8080/cfusion9/mythbusters/tests/">
 <cfset CF10URL = "http://localhost:8500/mythbusters/tests/">
-<cfset RAILOURL = "http://localhost:8080/railo4/mythbusters/tests/">
+<cfset RAILOURL = "http://localhost/mythbusters/tests/">
 <cfparam name="URL.reload" default="false">
 <cfset reload = "&amp;reload=#url.reload#">
 	

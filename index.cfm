@@ -82,11 +82,21 @@
 		<p>
 			<ul>
 				<li>Explore a number of myths with regards to coding in CFML</li>
-				<li>Put them to the test, and rate them plausible, confirmed or <b>busted</b>	</li>
+				<li>Put them to the test, and rate them plausible, confirmed or <b>busted</b>	</li>			
 			</ul>
 		</p>
       </article>
+	<article>
+        <h3>Source of the myths...</h3>
+        <p>
+			<ul>
+				<li>"Water cooler" (read: Pub) Discussions</li>
+				<li>Mailing Lists</li>
+				<li>You! Let me know if there is something we can test!</li>
 
+			</ul>
+		</p>
+      </article>
 	<article>
         <h3>The Process</h3>
         <p>
@@ -109,8 +119,8 @@
 			<li>Test each bit of code by looping 10000</li>
 			<li>Run each test 10 times</li>		
 			<li>Select the fastest result out of the 10 (Best Case)</li>		
-			<li>Cache the result using <code>Serialize()</code> (so not to bore you)</li>		
-			<li>Some tests don't run 10000 times, as it wouldn't make sense.</li>					
+			<li>Cache the result using <code>SerializeJSON()</code> (so not to bore you)</li>		
+			<li>Some tests don't run 10000 times, as it wouldn't make sense. Some might run more or less.</li>					
 
 		</ol>   
     </article>
@@ -123,7 +133,7 @@
 			   <ul>
 				  <li><abbr title="Your Milage May Vary">YMMV</abbr> (different configurations) 
         
-          		<li>I obviously work for a <a href="http://www.getrailo.com" title="Railo!">certain company</a>
+          		<li>I obviously work for a <a href="http://www.getrailo.com" title="Railo!">Railo Technologies</a> but I want to play fair. </li>
 				<li>Not a comparison of Railo Vs <abbr title="Adobe's ColdFusion">ACF</a> but testing each myth against each engine</li>
 				<li>
 				
@@ -133,6 +143,7 @@
 				Running on ColdFusion <code><cfoutput>#SERVER.COLDFUSION.productversion#</cfoutput></code>								
 				</cfif>
 			</li>
+				<li>Micro loops are not the best thing to test.</li>
 			 </ul>
 
 		  </p>
@@ -191,9 +202,11 @@
 	          <section><cf_show template="inline_if/a.cfm"></section>
 			  Vs.
 	          <section><cf_show template="inline_if/b.cfm"></section>
+			  Vs.
+	          <section><cf_show template="inline_if/c.cfm"></section>
 	    </article>
 
-		<cf_results test="inline_if&names=a,b" reload="#reload#">
+		<cf_results test="inline_if&names=a,b,c" reload="#reload#">
 	  	<cf_verdict result="plausable" message="Such little difference in it, that we really can't decide">
 	
 	

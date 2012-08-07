@@ -1,0 +1,1 @@
+<cfset b = iif(a eq 5, DE(1), DE(2))>

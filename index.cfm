@@ -124,7 +124,17 @@
           <li>Tried to use trusted cache so all templates are pre-compiled
           <li>Already compiled in Railo as a .ra so compilation is out of the question
           <li>I obviously work for a <a href="http://www.getrailo.com" title="Railo!">certain company</a>
-			<li>Running on Railo <code><cfoutput>#SERVER.RAILO.VERSION#</cfoutput></code></li>
+			<li>
+				
+				<cfif StructKeyExists(SERVER, "RAILO")>
+				Running on Railo <code><cfoutput>#SERVER.RAILO.VERSION#</cfoutput></code>
+				<cfelse>
+				Running on ColdFusion <code><cfoutput>#SERVER.COLDFUSION.VERSION#</cfoutput></code>								
+				</cfif>
+
+			
+			
+			</li>
 <!---
           <li>Not a comparison of Railo Vs <abbr title="Adobe's ColdFusion">ACF</a> but testing each myth against each engine</li>
 --->

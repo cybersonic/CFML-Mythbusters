@@ -2,7 +2,7 @@
 <cfset showCF9 = false>
 <cfset showCF10 = true>
 <cfset CF9URL = "http://localhost:8500/tests/">
-<cfset CF10URL = "http://localhost:8501/tests/">
+<cfset CF10URL = "http://acfmythbusters.local/tests/">
 <cfparam name="URL.reload" default="false">
 <cfset reload = "&amp;reload=#url.reload#">
 	
@@ -22,8 +22,10 @@
   <head>
     <title>CFML Mythbusters</title>
     <meta charset='utf-8'>
-    <script
-      src='/js/slides.js'></script>
+		<script src='/js/slides.js'></script>
+		<link href='http://fonts.googleapis.com/css?family=The+Girl+Next+Door' rel='stylesheet' type='text/css'>
+		<link href='/styles/main.css' rel='stylesheet' type='text/css'>
+		<script src='/js/voter.js'>sty</script>
   </head>
   
   
@@ -46,7 +48,7 @@
 		layout-regular to layout-faux-widescreen or layout-widescreen.
 	--->
 	
-    <section class='slides layout-faux-widescreen template-default'>
+    <section class='slides layout-widescreen template-default'>
       
       <article class='biglogo'>
       </article>
@@ -120,9 +122,12 @@
 			   <ul>
 				  <li><abbr title="Your Milage May Vary">YMMV</abbr> (different configurations) 
           <li>Tried to use trusted cache so all templates are pre-compiled
-          <li>Already compiled in Railo as a .ra so compilation is out of the question
+          <li><strike>Already compiled in Railo as a .ra so compilation is out of the question</strike>
           <li>I obviously work for a <a href="http://www.getrailo.com" title="Railo!">certain company</a>
-		<li>Running on Railo <code><cfoutput>#SERVER.RAILO.VERSION#</cfoutput></code></li>
+					<li>This is running on Railo <code><cfoutput>#SERVER.RAILO.VERSION#</cfoutput></code></li>
+					<li>I also run the tests on ColdFusion 10 
+						<cfhttp  url="#CF10URL#version.cfm" method="get"> <code><cfoutput>#cfhttp.filecontent#</cfoutput></code>
+					</li>
 		  	
 <!---
           <li>Not a comparison of Railo Vs <abbr title="Adobe's ColdFusion">ACF</a> but testing each myth against each engine</li>
@@ -185,7 +190,7 @@
 	</cfif>
 	
 
-	<cf_verdict result="busted" message="CFSCript isn't much faster, there are some TAG functions that are even faster!">
+		<cf_verdictvoter id="1" test="CFScript is always faster">
 
 
 
@@ -205,22 +210,23 @@
 	          <section><cf_show template="inline_if/a.cfm"></section>
 			  Vs.
 	          <section><cf_show template="inline_if/b.cfm"></section>
+				Vs.
+			      <section><cf_show template="inline_if/c.cfm"></section>
 	    </article>
 
 		<article>
 	        <h3>Results</h3>
-	        <iframe src='http://mythbusters.local/tests/index.cfm?test=inline_if&names=a,b<cfoutput>#reload#</cfoutput>'></iframe>
+	        <iframe src='http://mythbusters.local/tests/index.cfm?test=inline_if&names=a,b,c<cfoutput>#reload#</cfoutput>'></iframe>
 	    </article>
 
 		<cfif showCF10>
 		<article>
         	<h3>Results -  CF10</h3>
-        	<iframe src='<cfoutput>#CF10URL#</cfoutput>index.cfm?test=inline_if&names=a,b<cfoutput>#reload#</cfoutput>'></iframe>
+        	<iframe src='<cfoutput>#CF10URL#</cfoutput>index.cfm?test=inline_if&names=a,b,c<cfoutput>#reload#</cfoutput>'></iframe>
     	</article>
 		</cfif>
 	
-
-	  	<cf_verdict result="plausable" message="Such little difference in it, that we really can't decide">
+		<cf_verdictvoter id="2" test="Inline IF's are much better than CFIF">	
 	
 	
 		<!--- myth 3 --->
@@ -266,26 +272,27 @@
 			  
 			<article>
 		        <h3>Results</h3>
-		        <iframe src='http://mythbusters.local/tests/index.cfm?loops=100000&test=isdefined_2&names=a,b,c<cfoutput>#reload#</cfoutput>'></iframe>
+		        <iframe src='http://mythbusters.local/tests/index.cfm?test=isdefined_2&names=a,b,c<cfoutput>#reload#</cfoutput>'></iframe>
 		    </article>
 			<cfif showCF10>
 			<article>
 	        	<h3>Results -  CF10</h3>
-	        	<iframe src='<cfoutput>#CF10URL#</cfoutput>index.cfm?loops=10000&test=isdefined_2&names=a,b,c<cfoutput>#reload#</cfoutput>'></iframe>
+	        	<iframe src='<cfoutput>#CF10URL#</cfoutput>index.cfm?test=isdefined_2&names=a,b,c<cfoutput>#reload#</cfoutput>'></iframe>
 	    	</article>
 			</cfif>
 			
 			
-		<cf_verdict result="plausable" message="Such little difference in it, that we really can't decide">
+		<cf_verdictvoter id="3" test="isDefined() is slow">	
 	
 	
 	<!--- myth 4 --->
 	    <article>
 	        <h3>Myth 4</h3>
-	        <q>
+	        <q>&lt;cfloop&gt;
 	        	&lt;cfoutput&gt;
 				<br>#Item#<br>
 				&lt;/cfoutput&gt;
+				&lt;/cfloop&gt;
 				<br> is the only way to go!
 	        </q>
 	        <div class='author'>
@@ -310,8 +317,7 @@
 	        	<iframe src='<cfoutput>#CF10URL#</cfoutput>index.cfm?loops=100&test=output&names=a,b<cfoutput>#reload#</cfoutput>'></iframe>
 	    	</article>
 			</cfif>		
-		<cf_verdict result="busted" message="Obviously outputting within a loop is much faster, than creating multiple instances of cfoutput">
-	
+			<cf_verdictvoter id="4" test="CFOutput within a loop ">	
 	
 		<!--- myth 5 --->
     <article>
@@ -352,11 +358,12 @@
 	<cfif showCF10>
 	<article>
        	<h3>Results -  CF10</h3>
-       	<iframe src='<cfoutput>#CF10URL#</cfoutput>index.cfm?test=duplicate&loops=1000&names=a,b<cfoutput>#reload#</cfoutput>'></iframe>
+       	<iframe src='<cfoutput>#CF10URL#</cfoutput>index.cfm?test=duplicate&names=a,b<cfoutput>#reload#</cfoutput>'></iframe>
    	</article>
 	</cfif>		
 	
-	<cf_verdict result="confirmed" message='You can get a major boost by duplicating objects, even if they extend other objects'>
+	
+			<cf_verdictvoter id="5" test="Use Duplicate() instead of CreateObject()">	
 	
 	
 	<!--- myth 6 --->
@@ -399,7 +406,8 @@
    	</article>
 	</cfif>		
 	
-	<cf_verdict result="busted" message='Not much difference between using different trimming methodologies'>
+				<cf_verdictvoter id="6" test="Trim or CFSilent">	
+
 	
 	<!--- myth 7--->
     <article>
@@ -431,8 +439,8 @@
    	</article>
 	</cfif>
 	
-  	<cf_verdict result="plausable" message='It is very slow in Railo, CF not so much'>
-
+	<cf_verdictvoter id="7" test="Use Evaluate">	
+	
 	  
 	<!--- myth 8--->
     <article>
@@ -467,7 +475,9 @@
        	<iframe src='<cfoutput>#CF10URL#</cfoutput>index.cfm??loops=10000&test=invoke&names=a,b<cfoutput>#reload#</cfoutput>'></iframe>
    	</article>
 	</cfif>
-	<cf_verdict result="plausable" message='<strong>CFINVOKE</strong> creates new instances. No reason to use it with new syntax constructs like testObj["myMethod"]()'>
+	
+			<cf_verdictvoter id="8" test="Use CFINVOKE (or testObj['myMethod']()">	
+
 	
 	<!--- myth 9--->
     <article>
@@ -485,16 +495,21 @@
 	    <section><cf_show template="compare/a.cfm"></section>
 		Vs.
 	    <section><cf_show template="compare/b.cfm"></section>
+		Vs.
+	    <section><cf_show template="compare/c.cfm"></section>
+		Vs.
+	    <section><cf_show template="compare/d.cfm"></section>
+
 	</article>
 	<article>
        	<h3>Results</h3>
-	    <iframe src='/tests/index.cfm?test=compare&amp;names=a,b<cfoutput>#reload#</cfoutput>'></iframe>
+	    <iframe src='/tests/index.cfm?test=compare&amp;names=a,b,c,d<cfoutput>#reload#</cfoutput>'></iframe>
 	</article>	
 	<article>
        	<h3>Results -  CF10</h3>
-       	<iframe src='<cfoutput>#CF10URL#</cfoutput>index.cfm?test=compare&names=a,b<cfoutput>#reload#</cfoutput>'></iframe>
+       	<iframe src='<cfoutput>#CF10URL#</cfoutput>index.cfm?test=compare&names=a,b,c<cfoutput>#reload#</cfoutput>'></iframe>
    	</article>
-	<cf_verdict result="plausable" message="<strong>EQ</strong> seems to work pretty well">
+				<cf_verdictvoter id="9" test="EQ, IS, ==, Len()">	
 
 	<!--- myth 10--->
     <article>
@@ -525,7 +540,7 @@
        	<iframe src='<cfoutput>#CF10URL#</cfoutput>index.cfm?loops=1000&test=lists&names=a,b<cfoutput>#reload#</cfoutput>'></iframe>
    	</article>
 	
-	<cf_verdict result="busted" message="Lists are very slow! Use arrays instead">
+					<cf_verdictvoter id="10" test="List Vs Array!">	
 	
 	<!--- myth 11--->
     <article>
@@ -574,325 +589,51 @@
 		<h3>Some Download stats...</h3>
 		<iframe src="http://www.getrailo.com/reports/dlstats.cfm"></iframe>
 		<!--
-		<img class='centered' style='width: 800px' src="presentation/railo_downloads.png">
+		<img class='centered' style="width: 800px" src="presentation/railo_downloads.png">
 		-->
 	</article>	
 	
-	<cf_verdict result="busted" message="More people are using it, downloads growing, new versions all round">
+	<cf_verdictvoter id="11" test="CFML is DEAD">
 	
-	<!---
-	<article>
-       <h3>Competition: Win a copy of Railo 3: Beginner's Guide</h3>
-		<img class='centered' style='height: 300px' src="presentation/railobook.jpg">
-		<ul class="build">
-			<li>Go to <a href="http://bit.ly/RailoBook">http://bit.ly/RailoBook</a></li>
-			<li>Read the description of the book</li>
-			<li>Email what the title of Chapter 7 is to <a href="mailto:contact@getrailo.com">contact@getrailo.com</a></li>		
-			<li>Draw on the 30th of March</li>		
-		</ul>
+
+	<!--- Summary --->
+	<article style="background-color:#0094c0 !important;">
+		<h3>Summary</h3>
+		<table class="mythbuster-table" boder="0" cellpadding=2 cellspacing=2>
+			<thead>
+				<tr class="innerdash">
+				<th>Test</th>
+				<th>
+					Verdict
+				</th>
+			</tr>
+			</thead>
+			<tbody id="resultTable">
+				<tr></tr>
+				<tr></tr>
+				<tr></tr>
+				<tr></tr>
+				<tr></tr>
+				<tr></tr>
+				<tr></tr>
+				<tr></tr>
+				<tr></tr>
+				<tr></tr>
+				<tr></tr>
+			</tbody>
+		</table>
 	</article>
-	--->
 	
 	<article>
        <h3>Credits</h3>
 		<ul>
 			<li>Source code and presentation <a href="https://github.com/cybersonic/CFML-Mythbusters">https://github.com/cybersonic/CFML-Mythbusters</a></li>
 			<li>Discovery Channel for the idea, and a great show</li>
-			<li>Gert Franz for help in testing and the tests themselves</li>		
-			<li>Christian Ready for getting me here! Oh, and Hubble. It's awesome.</li>		
-			<li>Slides by <a href="http://code.google.com/p/html5slides/">HTML5 Slides http://code.google.com/p/html5slides/</a></li>			
+			<li>Gert Franz and Michael Offner for help in  the testing of the tests (Test-ception!)</li>		
+			<li>Slides by <a href="http://code.google.com/p/html5slides/">Google HTML5 Slides http://code.google.com/p/html5slides/</a></li>			
+			<li>Fonts by <a href="http://www.google.com/webfonts">Google Fonts http://www.google.com/webfonts</a></li>			
 		</ul>
 	</article>
-	<!---
-
-
-      <article class='smaller'>
-        <h3>
-          Simple slide with header and text (small font)
-        </h3>
-        <p>
-          This is a slide with just text. This is a slide with just text.
-          This is a slide with just text. This is a slide with just text.
-          This is a slide with just text. This is a slide with just text.
-        </p>
-        <p>
-          There is more text just underneath with a <code>code sample: 5px</code>.
-        </p>
-      </article>
-
-      <article>
-        <h3>
-          Slide with bullet points and a longer title, just because we
-          can make it longer
-        </h3>
-        <ul>
-          <li>
-            Use this template to create your presentation
-          </li>
-          <li>
-            Use the provided color palette, box and arrow graphics, and
-            chart styles
-          </li>
-          <li>
-            Instructions are provided to assist you in using this
-            presentation template effectively
-          </li>
-          <li>
-            At all times strive to maintain Google's corporate look and feel
-          </li>
-        </ul>
-      </article>
-
-      <article>
-        <h3>
-          Slide with bullet points that builds
-        </h3>
-        <ul class="build">
-          <li>
-            This is an example of a list
-          </li>
-          <li>
-            The list items fade in
-          </li>
-          <li>
-            Last one!
-          </li>
-        </ul>
-
-        <div class="build">
-          <p>Any element with child nodes can build.</p>
-          <p>It doesn't have to be a list.</p>
-        </div>
-      </article>
-
-      <article class='smaller'>
-        <h3>
-          Slide with bullet points (small font)
-        </h3>
-        <ul>
-          <li>
-            Use this template to create your presentation
-          <li>
-            Use the provided color palette, box and arrow graphics, and
-            chart styles
-          <li>
-            Instructions are provided to assist you in using this
-            presentation template effectively
-          <li>
-            At all times strive to maintain Google's corporate look and feel
-        </ul>
-      </article>
-
-      <article>
-        <h3>
-          Slide with a table
-        </h3>
-        
-        <table>
-          <tr>
-            <th>
-              Name
-            <th>
-              Occupation
-          <tr>
-            <td>
-              Luke Mahé
-            <td>
-              V.P. of Keepin’ It Real
-          <tr>
-            <td>
-              Marcin Wichary
-            <td>
-              The Michael Bay of Doodles
-        </table>
-      </article>
-      
-      <article class='smaller'>
-        <h3>
-          Slide with a table (smaller text)
-        </h3>
-        
-        <table>
-          <tr>
-            <th>
-              Name
-            <th>
-              Occupation
-          <tr>
-            <td>
-              Luke Mahé
-            <td>
-              V.P. of Keepin’ It Real
-          <tr>
-            <td>
-              Marcin Wichary
-            <td>
-              The Michael Bay of Doodles
-        </table>
-      </article>
-      
-      <article>
-        <h3>
-          Styles
-        </h3>
-        <ul>
-          <li>
-            <span class='red'>class="red"</span>
-          <li>
-            <span class='blue'>class="blue"</span>
-          <li>
-            <span class='green'>class="green"</span>
-          <li>
-            <span class='yellow'>class="yellow"</span>
-          <li>
-            <span class='black'>class="black"</span>
-          <li>
-            <span class='white'>class="white"</span>
-          <li>
-            <b>bold</b> and <i>italic</i>
-        </ul>
-      </article>
-      
-      <article>
-        <h2>
-          Segue slide
-        </h2>
-      </article>
-
-      <article>
-        <h3>
-          Slide with an image
-        </h3>
-        <p>
-          <img style='height: 500px' src='images/example-graph.png'>
-        </p>
-        <div class='source'>
-          Source: Sergey Brin
-        </div>
-      </article>
-
-      <article>
-        <h3>
-          Slide with an image (centered)
-        </h3>
-        <p>
-          <img class='centered' style='height: 500px' src='images/example-graph.png'>
-        </p>
-        <div class='source'>
-          Source: Larry Page
-        </div>
-      </article>
-
-      <article class='fill'>
-        <h3>
-          Image filling the slide (with optional header)
-        </h3>
-        <p>
-          <img src='images/example-cat.jpg'>
-        </p>
-        <div class='source white'>
-          Source: Eric Schmidt
-        </div>
-      </article>
-
-      <article>
-        <h3>
-          This slide has some code
-        </h3>
-        <section>
-        <pre>
-&lt;script type='text/javascript'&gt;
-  // Say hello world until the user starts questioning
-  // the meaningfulness of their existence.
-  function helloWorld(world) {
-    for (var i = 42; --i &gt;= 0;) {
-      alert('Hello ' + String(world));
-    }
-  }
-&lt;/script&gt;
-&lt;style&gt;
-  p { color: pink }
-  b { color: blue }
-  u { color: 'umber' }
-&lt;/style&gt;
-</pre>
-        </section>
-      </article>
-      
-      <article class='smaller'>
-        <h3>
-          This slide has some code (small font)
-        </h3>
-        <section>
-        <pre>
-&lt;script type='text/javascript'&gt;
-  // Say hello world until the user starts questioning
-  // the meaningfulness of their existence.
-  function helloWorld(world) {
-    for (var i = 42; --i &gt;= 0;) {
-      alert('Hello ' + String(world));
-    }
-  }
-&lt;/script&gt;
-&lt;style&gt;
-  p { color: pink }
-  b { color: blue }
-  u { color: 'umber' }
-&lt;/style&gt;
-</pre>
-        </section>
-      </article>
-      
-      <article>
-        <q>
-          The best way to predict the future is to invent it.
-        </q>
-        <div class='author'>
-          Alan Kay
-        </div>
-      </article>
-      
-      <article class='smaller'>
-        <q>
-          A distributed system is one in which the failure of a computer 
-          you didn’t even know existed can render your own computer unusable.
-        </q>
-        <div class='author'>
-          Leslie Lamport
-        </div>
-      </article>
-      
-      <article class='nobackground'>
-        <h3>
-          A slide with an embed + title
-        </h3>
-        
-        <iframe src='http://www.google.com/doodle4google/history.html'></iframe>
-      </article>
-
-      <article class='nobackground'>
-        <iframe src='http://www.google.com/doodle4google/history.html'></iframe>
-      </article>
-
-      <article class='fill'>
-        <h3>
-          Full-slide embed with (optional) slide title on top
-        </h3>
-        <iframe src='http://www.google.com/doodle4google/history.html'></iframe>
-      </article>
-      
-      <article>
-        <h3>
-          Thank you!
-        </h3>
-        
-        <ul>
-          <li>
-            <a href='http://www.google.com'>google.com</a>
-        </ul>
-      </article>
-
-    </section>
-	--->
+	
   </body>
 </html>

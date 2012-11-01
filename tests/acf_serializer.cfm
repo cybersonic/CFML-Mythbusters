@@ -1,0 +1,1 @@
+<cfset retData=SerializeJSON(arguments.data)>

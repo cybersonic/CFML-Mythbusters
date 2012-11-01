@@ -1,0 +1,41 @@
+.icons {margin-top:200px;}
+.icon {float: left;}
+.icon img { width: 230px; }
+				
+/* now to grow em */
+		
+.icon img:hover {
+ 	 	width: 300px;
+     -webkit-transition-property: height, width;
+     -webkit-transition-duration: 1s;
+}
+		
+.mythbuster-table {
+	font-family: 'The Girl Next Door', cursive;
+	color:white;
+	border:0px !important;
+}
+		
+		
+.verdictSelected {
+}
+.verdictSelected img{
+		width: 300px;
+		float: left;
+}
+.verdictUnselected {
+	opacity:0.3;
+ -webkit-transition-property: opacity;
+ -webkit-transition-duration: 1s;
+}
+.verdictUnselected img{
+		width: 230px;
+		float: left;
+}
+.mythbuster-table th {
+	font-size:1.5em;
+			
+}
+.innerdash {
+	border-bottom: 2px dashed white;
+}

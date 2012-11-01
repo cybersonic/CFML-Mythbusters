@@ -10,9 +10,22 @@
 <cfset iCount =  100>
 <cfset sLst = "">
 <cfset aList = []>
+
+<!--- make them server specific --->
+<cfset results = "results/#getProductName()#">
+<cfset rendered = "rendered/#getProductName()#">	
+	
+<!--- make sure the folders are created  --->
+<cfif !DirectoryExists(expandPath("/#results#"))>
+	<cfset DirectoryCreate(expandPath("/#results#"))>
+</cfif>
+<cfif !DirectoryExists(expandPath("/#rendered#"))>
+	<cfset DirectoryCreate(expandPath("/#rendered#"))>
+</cfif>
+
+
+
 <!--- create the tests if they are not rednered --->
-
-
 <cfset loop_template = FileRead(expandPath("/tests/loop_template.cfm"))>
 <cfif SERVER.ColdFusion.ProductName EQ "ColdFusion Server">
 	<cfif ListFirst(SERVER.ColdFusion.ProductVersion) EQ 10>
@@ -22,18 +35,22 @@
 	</cfif>
 	
 </cfif>
+
+
+
 <!--- Create the files for inclusion --->
 <cfloop list="#url.names#" index="n">
-	<cfif !FileExists("/tests/#url.test#_#n#_test.cfm")>
+	
+	<cfif !FileExists(expandPath("/#rendered#/#url.test#_#n#_test.cfm"))>
 		<cfset testContent = FileRead(expandPath("/tests/#url.test#/#n#.cfm"))>
 		<cfset test_with_loop = Replace(loop_template, "{test}", testContent)>
 		<!--- now save it as name_test.cfm --->
-		<cfset FileWrite(expandPath("/rendered/#url.test#_#n#_test.cfm"), test_with_loop)>
+		<cfset FileWrite(expandPath("/#rendered#/#url.test#_#n#_test.cfm"), test_with_loop)>
 	</cfif>
 </cfloop>
 
 
-<cfset saveFile = expandPath("/results/#url.test#.results")>
+<cfset saveFile = expandPath("/#results#/#url.test#.results")>
 
 <cfif !FileExists(saveFile)>
 
@@ -44,7 +61,8 @@
 	<cfloop list="#url.names#" index="n">
 		<cfset testinstance = {}>
 		<!--
-		<cfinclude template="/rendered/#url.test#_#n#_test.cfm">
+		THIS IS RUN! IT's an HTML comment
+		<cfinclude template="/#rendered#/#url.test#_#n#_test.cfm">
 		-->
 		<cfset queryAddRow(testResult)>
 		<cfset querySetCell(testResult, "test", url.test)>
@@ -53,21 +71,18 @@
 		<cfset querySetCell(testResult, "result", testinstance.total)>
 	</cfloop>
 </cfloop>
-
-<cfset FileWrite(saveFile, SerializeJSON(testResult))>
+	
+	<cfset FileWrite(saveFile, serializeItem(testResult))>
 <cfelse>
-	<cfset testResult = DESerializeJSON(FileRead(saveFile))>
-
+	<cfset testResult = deSerializeItem(FileRead(saveFile))>
 </cfif>
-
-
 
 
 
 <cfchart chartwidth="700" chartheight="500" format="png">
 	<cfchartseries type="bar" >
 		<cfloop list="#url.names#" index="r">
-			<cfchartdata item="#r#" value="#NumberFormat(getFastest(testResult, r), "9,999")#">			
+			<cfchartdata item="#r#" value="#getFastest(testResult, r)#">			
 		</cfloop>
 	</cfchartseries>
 </cfchart>	
@@ -111,6 +126,41 @@
 	<cfreturn range>
 </cffunction>
 
+
+<cffunction name="serializeItem">
+	<cfargument name="data">
+		<cfset var retData = "">
+				
+			<cfif StructKeyExists(SERVER, "railo")>
+				<cfinclude template="railo_serializer.cfm">
+			<cfelse>
+				<cfinclude template="acf_serializer.cfm">					
+			</cfif>
+		<cfreturn retData>
+</cffunction>
+
+<cffunction name="deSerializeItem">
+	<cfargument name="data">
+		<cfset var retData = "">
+				
+			<cfif StructKeyExists(SERVER, "railo")>
+				<cfinclude template="railo_deserializer.cfm">
+			<cfelse>
+				<cfinclude template="acf_deserializer.cfm">					
+			</cfif>
+		<cfreturn retData>
+</cffunction>
+
+
+<cfscript>
+	
+	function getProductName(){
+		if(StructKeyExists(SERVER, "railo")){
+			return "railo";
+		}
+		return "coldfusion";
+	}
+</cfscript>
 
 
 

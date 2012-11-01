@@ -3,3 +3,6 @@ results.json
 tests/rendered/*.cfm
 tests/results/*.results
 results/*.results
+server
+results/railo
+results/coldfusion

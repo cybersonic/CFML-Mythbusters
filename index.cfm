@@ -22,10 +22,8 @@
   <head>
     <title>CFML Mythbusters</title>
     <meta charset='utf-8'>
-		<script src='/js/slides.js'></script>
-		<link href='http://fonts.googleapis.com/css?family=The+Girl+Next+Door' rel='stylesheet' type='text/css'>
-		<link href='/styles/main.css' rel='stylesheet' type='text/css'>
-		<script src='/js/voter.js'>sty</script>
+    <script
+      src='js/slides.js'></script>
   </head>
   
   
@@ -36,10 +34,10 @@
 	       what you want. */
 
 		.slides.template-default article.biglogo  {
-		  background: white url(/images/railo-logo-orange.png) 50% 50% no-repeat !important;
+		  background: white url(images/railo-logo-orange.png) 50% 50% no-repeat !important;
 		}
 		.slides.template-default > article:not(.nobackground):not(.biglogo) {
-		  background: url(/images/railo-logo-small.png) 0px 590px no-repeat !important;  
+		  background: url(images/railo-logo-small.png) 0px 590px no-repeat !important;  
 		  background-color: white !important;  
 		}
 
@@ -70,26 +68,36 @@
       </article>
       
       <article>
-       	<img src="/presentation/my_name.png">
+       	<img src="presentation/my_name.png">
       </article>
 
       <article>
         <h3>CFML Myths!</h3>
         <p>
-          <img class='centered' style='height: 400px' src="/presentation/muppetmythbusters.jpg">
+          <img class='centered' style='height: 400px' src="presentation/muppetmythbusters.jpg">
         </p>
 		<p>
 			<ul>
 				<li>Explore a number of myths with regards to coding in CFML</li>
-				<li>Put them to the test, and rate them plausible, confirmed or <b>busted</b>	</li>
+				<li>Put them to the test, and rate them plausible, confirmed or <b>busted</b>	</li>			
 			</ul>
 		</p>
       </article>
+	<article>
+        <h3>Source of the myths...</h3>
+        <p>
+			<ul>
+				<li>"Water cooler" (read: Pub) Discussions</li>
+				<li>Mailing Lists</li>
+				<li>You! Let me know if there is something we can test!</li>
 
+			</ul>
+		</p>
+      </article>
 	<article>
         <h3>The Process</h3>
         <p>
-          <img class='centered' style='width: 600px' src="/presentation/monkey2001.jpg">
+          <img class='centered' style='width: 600px' src="presentation/monkey2001.jpg">
         </p>
 		    <p>
 			   <ul>
@@ -108,8 +116,8 @@
 			<li>Test each bit of code by looping 10000</li>
 			<li>Run each test 10 times</li>		
 			<li>Select the fastest result out of the 10 (Best Case)</li>		
-			<li>Cache the result using <code>Serialize()</code> (so not to bore you)</li>		
-			<li>Some tests don't run 10000 times, as it wouldn't make sense.</li>					
+			<li>Cache the result using <code>SerializeJSON()</code> (so not to bore you)</li>		
+			<li>Some tests don't run 10000 times, as it wouldn't make sense. Some might run more or less.</li>					
 
 		</ol>   
     </article>
@@ -121,17 +129,18 @@
 	
 			   <ul>
 				  <li><abbr title="Your Milage May Vary">YMMV</abbr> (different configurations) 
-          <li>Tried to use trusted cache so all templates are pre-compiled
-          <li><strike>Already compiled in Railo as a .ra so compilation is out of the question</strike>
-          <li>I obviously work for a <a href="http://www.getrailo.com" title="Railo!">certain company</a>
-					<li>This is running on Railo <code><cfoutput>#SERVER.RAILO.VERSION#</cfoutput></code></li>
-					<li>I also run the tests on ColdFusion 10 
-						<cfhttp  url="#CF10URL#version.cfm" method="get"> <code><cfoutput>#cfhttp.filecontent#</cfoutput></code>
-					</li>
-		  	
-<!---
-          <li>Not a comparison of Railo Vs <abbr title="Adobe's ColdFusion">ACF</a> but testing each myth against each engine</li>
---->
+        
+          		<li>I obviously work for a <a href="http://www.getrailo.com" title="Railo!">Railo Technologies</a> but I want to play fair. </li>
+				<li>Not a comparison of Railo Vs <abbr title="Adobe's ColdFusion">ACF</a> but testing each myth against each engine</li>
+				<li>
+				
+				<cfif StructKeyExists(SERVER, "RAILO")>
+				Running on Railo <code><cfoutput>#SERVER.RAILO.VERSION#</cfoutput></code>
+				<cfelse>
+				Running on ColdFusion <code><cfoutput>#SERVER.COLDFUSION.productversion#</cfoutput></code>								
+				</cfif>
+			</li>
+				<li>Micro loops are not the best thing to test.</li>
 			 </ul>
 
 		  </p>
@@ -156,17 +165,7 @@
           <section><cf_show template="script_1/b.cfm"></section>
     </article>
 
-	<article>
-        <h3>Results -  Railo</h3>
-        <iframe src='/tests/index.cfm?test=script_1&names=a,b<cfoutput>#reload#</cfoutput>'></iframe>
-    </article>
-
-	<cfif showCF10>
-	<article>
-        <h3>Results -  CF10</h3>
-        <iframe src='<cfoutput>#CF10URL#</cfoutput>index.cfm?test=script_1&names=a,b<cfoutput>#reload#</cfoutput>'></iframe>
-    </article>
-	</cfif>
+	<cf_results test="script_1&names=a,b" reload="#reload#">
 
     <article>
         <h3>Code</h3>
@@ -177,20 +176,10 @@
           <section><cf_show template="loops/c.cfm"></section>
     </article>
 
-	<article>
-        <h3>Results - Railo</h3>
-        <iframe src='/tests/index.cfm?test=loops&names=a,b,c<cfoutput>#reload#</cfoutput>'></iframe>
-    </article>
-
-	<cfif showCF10>
-	<article>
-        <h3>Results -  CF10</h3>
-        <iframe src='<cfoutput>#CF10URL#</cfoutput>index.cfm?test=loops&names=a,b<cfoutput>#reload#</cfoutput>'></iframe>
-    </article>
-	</cfif>
+	<cf_results test="loops&names=a,b,c" reload="#reload#">
 	
 
-		<cf_verdictvoter id="1" test="CFScript is always faster">
+	<cf_verdict result="busted" message="CFSCript isn't much faster, there are some TAG functions that are even faster!">
 
 
 
@@ -210,24 +199,12 @@
 	          <section><cf_show template="inline_if/a.cfm"></section>
 			  Vs.
 	          <section><cf_show template="inline_if/b.cfm"></section>
-				Vs.
-			      <section><cf_show template="inline_if/c.cfm"></section>
+			  Vs.
+	          <section><cf_show template="inline_if/c.cfm"></section>
 	    </article>
 
-		<article>
-	        <h3>Results</h3>
-	        <iframe src='http://mythbusters.local/tests/index.cfm?test=inline_if&names=a,b,c<cfoutput>#reload#</cfoutput>'></iframe>
-	    </article>
-
-		<cfif showCF10>
-		<article>
-        	<h3>Results -  CF10</h3>
-        	<iframe src='<cfoutput>#CF10URL#</cfoutput>index.cfm?test=inline_if&names=a,b,c<cfoutput>#reload#</cfoutput>'></iframe>
-    	</article>
-		</cfif>
-	
-		<cf_verdictvoter id="2" test="Inline IF's are much better than CFIF">	
-	
+		<cf_results test="inline_if&names=a,b,c" reload="#reload#">
+	  	<cf_verdict result="plausable" message="Such little difference in it, that we really can't decide">
 	
 		<!--- myth 3 --->
 		    <article>
@@ -249,17 +226,8 @@
 		          <section><cf_show template="isdefined/c.cfm"></section>
 		    </article>
 
-			<article>
-		        <h3>Results</h3>
-		        <iframe src='http://mythbusters.local/tests/index.cfm?loops=100000&test=isdefined&names=a,b,c<cfoutput>#reload#</cfoutput>'></iframe>
-		    </article>
-			<cfif showCF10>
-			<article>
-	        	<h3>Results -  CF10</h3>
-	        	<iframe src='<cfoutput>#CF10URL#</cfoutput>index.cfm?loops=100000&test=isdefined&names=a,b,c<cfoutput>#reload#</cfoutput>'></iframe>
-	    	</article>
-			</cfif>		  
-			
+			<cf_results test="isdefined&names=a,b,c&loops=100000" reload="#reload#">
+	
 			<article>
 		        <h3>Code</h3>
 		          <section><cf_show template="isdefined_2/a.cfm"></section>
@@ -269,20 +237,8 @@
 		          <section><cf_show template="isdefined_2/c.cfm"></section>
 		    </article>
 			
-			  
-			<article>
-		        <h3>Results</h3>
-		        <iframe src='http://mythbusters.local/tests/index.cfm?test=isdefined_2&names=a,b,c<cfoutput>#reload#</cfoutput>'></iframe>
-		    </article>
-			<cfif showCF10>
-			<article>
-	        	<h3>Results -  CF10</h3>
-	        	<iframe src='<cfoutput>#CF10URL#</cfoutput>index.cfm?test=isdefined_2&names=a,b,c<cfoutput>#reload#</cfoutput>'></iframe>
-	    	</article>
-			</cfif>
-			
-			
-		<cf_verdictvoter id="3" test="isDefined() is slow">	
+			<cf_results test="isdefined_2&names=a,b,c&loops=100000" reload="#reload#">
+			<cf_verdict result="plausable" message="Such little difference in it, that we really can't decide">
 	
 	
 	<!--- myth 4 --->
@@ -307,17 +263,8 @@
 	          <section><cf_show template="output/b.cfm"></section>
 	    </article>
 
-		<article>
-	        <h3>Results</h3>
-	        <iframe src='http://mythbusters.local/tests/index.cfm?loops=100&test=output&amp;names=a,b<cfoutput>#reload#</cfoutput>'></iframe>
-	    </article>
-		<cfif showCF10>
-			<article>
-	        	<h3>Results -  CF10</h3>
-	        	<iframe src='<cfoutput>#CF10URL#</cfoutput>index.cfm?loops=100&test=output&names=a,b<cfoutput>#reload#</cfoutput>'></iframe>
-	    	</article>
-			</cfif>		
-			<cf_verdictvoter id="4" test="CFOutput within a loop ">	
+		<cf_results test="output&names=a,b&loops=100" reload="#reload#">
+		<cf_verdict result="busted" message="Obviously outputting within a loop is much faster, than creating multiple instances of cfoutput">
 	
 		<!--- myth 5 --->
     <article>
@@ -350,18 +297,8 @@
 			  <section><cf_show template="supersuper.cfc"></section>
 	    </article>
 
-
-	<article>
-        <h3>Results</h3>
-        <iframe src='http://mythbusters.local/tests/index.cfm?test=duplicate&amp;names=a,b<cfoutput>#reload#</cfoutput>'></iframe>
-    </article>
-	<cfif showCF10>
-	<article>
-       	<h3>Results -  CF10</h3>
-       	<iframe src='<cfoutput>#CF10URL#</cfoutput>index.cfm?test=duplicate&names=a,b<cfoutput>#reload#</cfoutput>'></iframe>
-   	</article>
-	</cfif>		
-	
+		<cf_results test="duplicate&names=a,b" reload="#reload#">
+		<cf_verdict result="confirmed" message='You can get a major boost by duplicating objects, even if they extend other objects'>
 	
 			<cf_verdictvoter id="5" test="Use Duplicate() instead of CreateObject()">	
 	
@@ -393,21 +330,9 @@
 	</article>
 		
 	
-
-	<article>
-        <h3>Results</h3>
-        <iframe src='http://mythbusters.local/tests/index.cfm?loops=100&test=silence&amp;names=a,b,c,d&amp;RequestTimeout=300<cfoutput>#reload#</cfoutput>'></iframe>
-    </article>
+		<cf_results test="silence&names=a,b,c&loops=100&RequestTimeout=300" reload="#reload#">
+		<cf_verdict result="busted" message='Not much difference between using different trimming methodologies'>
 	
-	<cfif showCF10>
-	<article>
-       	<h3>Results -  CF10</h3>
-       	<iframe src='<cfoutput>#CF10URL#</cfoutput>index.cfm?loops=100&test=silence&names=a,b,c,d<cfoutput>#reload#</cfoutput>'></iframe>
-   	</article>
-	</cfif>		
-	
-				<cf_verdictvoter id="6" test="Trim or CFSilent">	
-
 	
 	<!--- myth 7--->
     <article>
@@ -427,20 +352,11 @@
 		Vs.
 	    <section><cf_show template="evaluate/c.cfm"></section>
 	</article>
-	<article>
-       	<h3>Results</h3>
-	    <iframe src='/tests/index.cfm?test=evaluate&amp;names=a,b,c<cfoutput>#reload#</cfoutput>'></iframe>
-	  </article>
-	  
-	<cfif showCF10>
-	<article>
-       	<h3>Results -  CF10</h3>
-       	<iframe src='<cfoutput>#CF10URL#</cfoutput>index.cfm?test=evaluate&names=a,b,c<cfoutput>#reload#</cfoutput>'></iframe>
-   	</article>
-	</cfif>
 	
-	<cf_verdictvoter id="7" test="Use Evaluate">	
 	
+	<cf_results test="evaluate&names=a,b,c" reload="#reload#">
+	<cf_verdict result="plausable" message='It is very slow in Railo, CF not so much'>
+
 	  
 	<!--- myth 8--->
     <article>
@@ -465,16 +381,10 @@
 	    Vs.
 	    <section><cf_show template="invoke/c.cfm"></section>
 	</article>
-	<article>
-       	<h3>Results</h3>
-	    <iframe src='/tests/index.cfm?loops=10000&test=invoke&amp;names=a,b,c<cfoutput>#reload#</cfoutput>'></iframe>
-	</article>	
-	<cfif showCF10>
-	<article>
-       	<h3>Results -  CF10</h3>
-       	<iframe src='<cfoutput>#CF10URL#</cfoutput>index.cfm??loops=10000&test=invoke&names=a,b<cfoutput>#reload#</cfoutput>'></iframe>
-   	</article>
-	</cfif>
+	
+	
+	<cf_results test="invoke&names=a,b&loops=10000" reload="#reload#">
+	<cf_verdict result="plausable" message='<strong>CFINVOKE</strong> creates new instances. No reason to use it with new syntax constructs like testObj["myMethod"]()'>
 	
 			<cf_verdictvoter id="8" test="Use CFINVOKE (or testObj['myMethod']()">	
 
@@ -501,15 +411,9 @@
 	    <section><cf_show template="compare/d.cfm"></section>
 
 	</article>
-	<article>
-       	<h3>Results</h3>
-	    <iframe src='/tests/index.cfm?test=compare&amp;names=a,b,c,d<cfoutput>#reload#</cfoutput>'></iframe>
-	</article>	
-	<article>
-       	<h3>Results -  CF10</h3>
-       	<iframe src='<cfoutput>#CF10URL#</cfoutput>index.cfm?test=compare&names=a,b,c<cfoutput>#reload#</cfoutput>'></iframe>
-   	</article>
-				<cf_verdictvoter id="9" test="EQ, IS, ==, Len()">	
+	
+	<cf_results test="compare&names=a,b&loops=10000" reload="#reload#">
+	<cf_verdict result="plausable" message="<strong>EQ</strong> seems to work pretty well">
 
 	<!--- myth 10--->
     <article>
@@ -531,16 +435,9 @@
 		<section><cfoutput>#HTMLCodeFormat("<cfset sList = ArrayToList(aList)>")#</cfoutput></section>
 	    
 	</article>
-	<article>
-       	<h3>Results</h3>
-	    <iframe src='/tests/index.cfm?loops=1000&test=lists&amp;names=a,b<cfoutput>#reload#</cfoutput>'></iframe>
-	</article>	
-	<article>
-       	<h3>Results -  CF10</h3>
-       	<iframe src='<cfoutput>#CF10URL#</cfoutput>index.cfm?loops=1000&test=lists&names=a,b<cfoutput>#reload#</cfoutput>'></iframe>
-   	</article>
 	
-					<cf_verdictvoter id="10" test="List Vs Array!">	
+	<cf_results test="lists&names=a,b&loops=10000" reload="#reload#">
+	<cf_verdict result="busted" message="Lists are very slow! Use arrays instead">
 	
 	<!--- myth 11--->
     <article>
@@ -634,6 +531,6 @@
 			<li>Fonts by <a href="http://www.google.com/webfonts">Google Fonts http://www.google.com/webfonts</a></li>			
 		</ul>
 	</article>
-	
+
   </body>
 </html>

@@ -1,1 +1,1 @@
-<cfset oTest = CreateObject("tests.test")>
+<cfset oTest = CreateObject("mythbusters.tests.test")>

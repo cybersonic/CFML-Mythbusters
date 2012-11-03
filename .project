@@ -7,6 +7,12 @@
 	<buildSpec>
 	</buildSpec>
 	<natures>
-		<nature>org.cfeclipse.cfml.CFENature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>mxunit</name>
+			<type>2</type>
+			<location>/Users/markdrew/Sites/mxunit</location>
+		</link>
+	</linkedResources>
 </projectDescription>
